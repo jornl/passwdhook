@@ -1,0 +1,19 @@
+# Build artifacts
+*.exe
+*.dll
+*.so
+*.o
+*.obj
+*.pdb
+/build/
+
+# Logs
+*.log
+
+# OS-generated files
+Thumbs.db
+.DS_Store
+
+# Editor/IDE files
+.vscode/
+.idea/
