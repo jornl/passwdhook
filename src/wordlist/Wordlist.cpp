@@ -5,11 +5,9 @@
 #include <unordered_map>
 
 #include "Wordlist.h"
-
 namespace PasswordHook {
-    Wordlist::Wordlist(const std::string &filename, const std::string &userName, Config *config) {
-        m_config = config;
-        Load(filename, userName, m_config->Get<int>("AllowUsernameAsPassword", false));
+    Wordlist::Wordlist(const std::string &filename, const std::string &userName, const Config& config): m_config(config) {
+        Load(filename, userName, m_config.Get<int>("AllowUsernameAsPassword", false));
     }
 
     void Wordlist::Load(const std::string &filename, const std::string &userName, bool allowUserNameAsPassword) {
@@ -43,8 +41,8 @@ namespace PasswordHook {
     void Wordlist::ScoreDictionaryWord(const std::string &word) {
         size_t i = 0;
 
-        const int maxRepeatChars = m_config->Get<int>("MaxRepeatingCharacters", 3);
-        const int maxRepeatDigits = m_config->Get<int>("MaxRepeatingDigits", 2);
+        const int maxRepeatChars = m_config.Get<int>("MaxRepeatingCharacters", 3);
+        const int maxRepeatDigits = m_config.Get<int>("MaxRepeatingDigits", 2);
 
         while (i < word.size()) {
             bool matchedDictionaryWord = false;

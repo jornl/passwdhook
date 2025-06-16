@@ -1,16 +1,16 @@
 #ifndef WORDLIST_H
 #define WORDLIST_H
+
+#include <string>
+#include <unordered_map>
 #include "src/config/Config.h"
 
 
 namespace PasswordHook {
-#include <string>
-#include <unordered_map>
-
     class Wordlist {
     public:
-        explicit Wordlist(const std::string &filename, const std::string &userName = "",
-                          Config *config = nullptr);
+        explicit Wordlist(const std::string &filename, const std::string &userName,
+                          const Config& config);
 
         int score{0};
         int GetScore(const std::string &input);
@@ -19,7 +19,7 @@ namespace PasswordHook {
 
     private:
         std::unordered_map<std::string, int> m_wordList;
-        Config *m_config = nullptr;
+        const Config& m_config;
 
         void Load(const std::string &filename, const std::string &userName,
                   bool allowUserNameAsPassword = false);
