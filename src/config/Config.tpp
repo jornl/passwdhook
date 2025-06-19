@@ -1,5 +1,8 @@
 #pragma once
 
+#include <algorithm>
+#include <string>
+
 namespace PasswordHook {
 
     template<typename Type>
@@ -16,7 +19,7 @@ namespace PasswordHook {
         if constexpr (std::is_same_v<Type, bool>) {
             std::string lowerValue = value;
             std::transform(lowerValue.begin(), lowerValue.end(), lowerValue.begin(), ::tolower);
-            return (lowerValue == "true" || lowerValue == "1" || lowerValue == "yes");
+            return (lowerValue == "true" || lowerValue == "yes");
         }
         if constexpr (std::is_same_v<Type, std::string>) {
             return value;

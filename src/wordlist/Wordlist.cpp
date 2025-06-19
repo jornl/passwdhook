@@ -6,11 +6,17 @@
 
 #include "Wordlist.h"
 namespace PasswordHook {
-    Wordlist::Wordlist(const std::string &filename, const std::string &userName, const Config& config): m_config(config) {
-        Load(filename, userName, m_config.Get<int>("AllowUsernameAsPassword", false));
+    Wordlist::Wordlist(const std::string &filename, const std::string &userName, const Config &config) :
+        m_config(config) {
+        Load(filename, userName, m_config.Get<bool>("AllowUsernameAsPassword", false));
     }
 
     void Wordlist::Load(const std::string &filename, const std::string &userName, bool allowUserNameAsPassword) {
+        if (!filename.ends_with(".csv") && !filename.ends_with(".txt")) {
+            std::cerr << "Invalid wordlist file format. Expected .csv or .txt file." << "\n";
+            throw std::runtime_error("Invalid wordlist file format");
+        }
+
         std::ifstream file(filename);
         if (!file) {
             std::cerr << "Error opening wordlist file: " << filename << "\n";

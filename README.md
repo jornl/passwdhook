@@ -15,16 +15,14 @@ password,1
 qwerty,1
 ```
 
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request.
 
 ## Building
 
 1. Clone the repository
-2. Compile with a C++17-compatible compiler
+2. Run `cmake -B build` in the root directory
+3. Run `cmake --build build` to build the project
 
-For example `cl /EHsc /std:c++17 .\PasswordHook.cpp`
+For Windows, you need to run `cmake --build build --config Release` to build the project in release mode.
 
 ## Usage
 
@@ -38,22 +36,32 @@ In the `preChangeProg` you configure the path to the executable, and in the `pre
 
 ### Configuration options
 
-`config.ini` contains, which is all commented out, but the values there are the defaults. You can change them as you please.
+The application uses a config.ini file for settings. The config file is copied to the build directory automatically during the build process.
+You can change the values as you please.
+
+Example `config.ini`:
 
 ```ini
 [PasswordSettings]
 # The minimum score required for a password to be considered valid.
-#MinimumScore=10
-
-# The maximum repeat count for any character in the password.
-#MaxRepeatingCharacters=3
+MinimumScore=10
 
 # Allow the use of the provided username in the password.
-#AllowUsernameAsPassword=false
+AllowUsernameAsPassword=false
+
+# The maximum repeat count for any character in the password.
+MaxRepeatingCharacters=3
+
+# The maximum repeat count for numbers in the password.
+MaxRepeatingDigits=2
 
 ```
 
-The project will run without a config file, it will then just use the default values. 
+The project will not run without a config file. 
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
 
 ## License
 
