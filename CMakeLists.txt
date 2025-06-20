@@ -16,17 +16,13 @@ add_executable(passwdhook
 
 # TODO: Check if this is necessary.
 if(WIN32)
-    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-        set(BINARY_DIR "${CMAKE_BINARY_DIR}/Debug")
-    else ()
-        set(BINARY_DIR "${CMAKE_BINARY_DIR}/Release")
-    endif ()
+   set(BINARY_DIR "${CMAKE_BINARY_DIR}/$<CONFIG>")
 else()
     set(BINARY_DIR "${CMAKE_BINARY_DIR}")
 endif()
 
 add_custom_target(passwdhook-config
-        COMMAND ${CMAKE_COMMAND} -E copy
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
         ${CMAKE_SOURCE_DIR}/src/config.ini
         ${BINARY_DIR}/config.ini
 )
