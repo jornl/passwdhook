@@ -1,7 +1,9 @@
-#pragma once
+#ifndef CONFIG_TPP
+#define CONFIG_TPP
 
 #include <algorithm>
 #include <string>
+#include <ranges>
 
 namespace PasswordHook {
 
@@ -18,7 +20,7 @@ namespace PasswordHook {
         }
         if constexpr (std::is_same_v<Type, bool>) {
             std::string lowerValue = value;
-            std::transform(lowerValue.begin(), lowerValue.end(), lowerValue.begin(), ::tolower);
+            std::ranges::transform(lowerValue, lowerValue.begin(), ::tolower);
             return (lowerValue == "true" || lowerValue == "yes");
         }
         if constexpr (std::is_same_v<Type, std::string>) {
@@ -33,3 +35,5 @@ namespace PasswordHook {
 
 
 } // namespace PasswordHook
+
+#endif // CONFIG_TPP

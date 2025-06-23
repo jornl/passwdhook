@@ -1,8 +1,10 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <ranges>
 #include <string>
 #include <unordered_map>
+#include <utility>
 
 #include "Wordlist.h"
 namespace PasswordHook {
@@ -38,74 +40,72 @@ namespace PasswordHook {
         }
     }
 
-    int Wordlist::GetScore(const std::string &input) {
-        ScoreDictionaryWord(input);
-
-        return score; // Placeholder for actual score calculation
-    }
-
-    void Wordlist::ScoreDictionaryWord(const std::string &word) {
+    int Wordlist::GetScore(const std::string &word) {
+        int score = 0;
         size_t i = 0;
-
         const int maxRepeatChars = m_config.Get<int>("MaxRepeatingCharacters", 3);
         const int maxRepeatDigits = m_config.Get<int>("MaxRepeatingDigits", 2);
 
         while (i < word.size()) {
-            bool matchedDictionaryWord = false;
-
-            // Check wordlist matches
-            for (const auto &[dictWord, dictValue]: m_wordList) {
-                if (i + dictWord.size() <= word.size()) {
-                    if (std::string candidate = word.substr(i, dictWord.size()); iEquals(candidate, dictWord)) {
-                        score += dictValue; // Only counts as 1, could also subtract full word length here if doing
-                                            // effective length
-                        i += dictWord.size();
-                        matchedDictionaryWord = true;
-                        break;
-                    }
-                }
+            auto [dictScore, matchFound] = MatchDictionaryWord(word, i);
+            if (dictScore > 0) {
+                score += dictScore;
+                continue;
             }
 
-            if (matchedDictionaryWord)
-                continue;
-
-            // Check for repeating digits
             if (std::isdigit(word[i])) {
-                size_t j = i + 1;
-                while (j < word.size() && std::isdigit(word[j])) {
-                    ++j;
-                }
-
-                if (const int digitRun = static_cast<int>(j - i); digitRun <= maxRepeatDigits) {
-                    score += digitRun;
-                } else {
-                    score += digitRun / 2;
-                }
-
-                i = j;
+                score += HandleRepeatingDigits(word, i, maxRepeatDigits);
                 continue;
             }
 
-            // Check for repeating characters
-            const char currentChar = word[i];
-            int runLength = 1;
-            size_t j = i + 1;
-            while (j < word.size() && word[j] == currentChar && !std::isdigit(word[j])) {
-                runLength++;
-                j++;
+            if (!matchFound) {
+                score += HandleRepeatingCharacters(word, i, maxRepeatChars);
             }
-
-            if (runLength <= maxRepeatChars)
-                score += runLength;
-            else
-                score += runLength / 2;
-
-            i += runLength;
         }
+
+        return score;
+    }
+
+    std::pair<int, bool> Wordlist::MatchDictionaryWord(const std::string &word, size_t &i) {
+        for (const auto &[dictWord, dictValue]: m_wordList) {
+            if (i + dictWord.size() <= word.size()) {
+                if (std::string candidate = word.substr(i, dictWord.size()); iEquals(candidate, dictWord)) {
+                    i += dictWord.size();
+                    return {dictValue, true};
+                }
+            }
+        }
+
+        return {0, false};
+    }
+
+    int Wordlist::HandleRepeatingCharacters(const std::string &word, size_t &i, const int maxRepeatChars) {
+        const char currentChar = word[i];
+        int runLength = 1;
+        size_t j = i + 1;
+
+        while (j < word.size() && word[j] == currentChar && !std::isdigit(word[j])) {
+            runLength++;
+            j++;
+        }
+
+        i = j;
+        return (runLength <= maxRepeatChars) ? runLength : runLength / 2;
+    }
+
+    int Wordlist::HandleRepeatingDigits(const std::string &word, size_t &i, const int maxRepeatDigits) {
+        size_t j = i + 1;
+        while (j < word.size() && std::isdigit(word[j])) {
+            ++j;
+        }
+        const int digitRun = static_cast<int>(j - i);
+        i = j;
+
+        return (digitRun <= maxRepeatDigits) ? digitRun : digitRun / 2;
     }
 
     bool Wordlist::iEquals(const std::string &a, const std::string &b) {
-        return std::equal(a.begin(), a.end(), b.begin(), b.end(),
-                          [](char a, char b) { return std::tolower(a) == std::tolower(b); });
+        return std::ranges::equal(a, b,
+                                  [](const char ca, const char cb) { return std::tolower(ca) == std::tolower(cb); });
     }
 } // namespace PasswordHook
