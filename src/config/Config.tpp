@@ -16,7 +16,11 @@ namespace PasswordHook {
         const auto &value = m_configMap.at(key);
 
         if constexpr (std::is_same_v<Type, int>) {
-            return std::stoi(value);
+            try {
+                return std::stoi(value);
+            } catch (...) {
+                return defaultValue;
+            }
         }
         if constexpr (std::is_same_v<Type, bool>) {
             std::string lowerValue = value;

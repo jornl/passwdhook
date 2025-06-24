@@ -90,6 +90,11 @@ namespace PasswordHook {
         }
 
         i = j;
+
+        if (maxRepeatChars == 0) {
+            return runLength;
+        }
+
         return (runLength <= maxRepeatChars) ? runLength : runLength / 2;
     }
 
@@ -100,6 +105,10 @@ namespace PasswordHook {
         }
         const int digitRun = static_cast<int>(j - i);
         i = j;
+
+        if (maxRepeatDigits == 0) {
+            return digitRun;
+        }
 
         return (digitRun <= maxRepeatDigits) ? digitRun : digitRun / 2;
     }
