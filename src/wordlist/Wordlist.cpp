@@ -44,7 +44,7 @@ namespace PasswordHook {
         int score = 0;
         size_t i = 0;
         const int maxRepeatChars = m_config.Get<int>("MaxRepeatingCharacters", 3);
-        const int maxRepeatDigits = m_config.Get<int>("MaxRepeatingDigits", 2);
+        const int maxConsecutiveDigits = m_config.Get<int>("MaxConsecutiveDigits", 2);
 
         while (i < word.size()) {
             auto [dictScore, matchFound] = MatchDictionaryWord(word, i);
@@ -54,7 +54,7 @@ namespace PasswordHook {
             }
 
             if (std::isdigit(word[i])) {
-                score += HandleRepeatingDigits(word, i, maxRepeatDigits);
+                score += HandleConsecutiveDigits(word, i, maxConsecutiveDigits);
                 continue;
             }
 
@@ -98,7 +98,7 @@ namespace PasswordHook {
         return (runLength <= maxRepeatChars) ? runLength : runLength / 2;
     }
 
-    int Wordlist::HandleRepeatingDigits(const std::string &word, size_t &i, const int maxRepeatDigits) {
+    int Wordlist::HandleConsecutiveDigits(const std::string &word, size_t &i, const int maxConsecutiveDigits) {
         size_t j = i + 1;
         while (j < word.size() && std::isdigit(word[j])) {
             ++j;
@@ -106,11 +106,11 @@ namespace PasswordHook {
         const int digitRun = static_cast<int>(j - i);
         i = j;
 
-        if (maxRepeatDigits == 0) {
+        if (maxConsecutiveDigits == 0) {
             return digitRun;
         }
 
-        return (digitRun <= maxRepeatDigits) ? digitRun : digitRun / 2;
+        return (digitRun <= maxConsecutiveDigits) ? digitRun : digitRun / 2;
     }
 
     bool Wordlist::iEquals(const std::string &a, const std::string &b) {

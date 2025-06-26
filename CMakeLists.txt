@@ -23,10 +23,10 @@ endif()
 
 add_custom_target(passwdhook-config
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${CMAKE_SOURCE_DIR}/src/config.ini
-        ${BINARY_DIR}/config.ini
+        ${CMAKE_SOURCE_DIR}/src/passwdhook.ini
+        ${BINARY_DIR}/passwdhook.ini
 )
 
 add_dependencies(passwdhook passwdhook-config)
 
-#target_include_directories(passwdhook PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(passwdhook PRIVATE ${CMAKE_SOURCE_DIR}/include)

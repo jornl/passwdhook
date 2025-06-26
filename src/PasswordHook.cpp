@@ -14,7 +14,7 @@ int main(const int argc, char *argv[]) {
         return 1;
     }
 
-    const PasswordHook::Config cfg("./config.ini");
+    const PasswordHook::Config cfg("./passwdhook.ini");
 
     const std::string username = argv[2];
     const std::string password = argv[3];

@@ -14,8 +14,7 @@ namespace PasswordHook {
     void Config::Load(const std::string &filename) {
         std::ifstream file(filename);
         if (!file) {
-            std::cerr << "Error opening config file: " << filename << "\n";
-            throw std::runtime_error("Could not open config file");
+            std::cerr << "Error opening config file: " << filename << ". Using default values.\n";
         }
 
         std::string line;

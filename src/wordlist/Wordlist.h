@@ -25,7 +25,7 @@ namespace PasswordHook {
 
         std::pair<int, bool> MatchDictionaryWord(const std::string &word, size_t &i);
         static int HandleRepeatingCharacters(const std::string &word, size_t &i, int maxRepeatChars);
-        static int HandleRepeatingDigits(const std::string &word, size_t &i, int maxRepeatDigits);
+        static int HandleConsecutiveDigits(const std::string &word, size_t &i, int maxRepeatDigits);
     };
 } // namespace PasswordHook
 
