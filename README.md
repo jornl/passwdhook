@@ -2,11 +2,11 @@
 
 Basic C++ project for enhanced password management with [passwdhk](https://sourceforge.net/projects/passwdhk/).
 
-- Integrates with passwdhk to encourage stronger passwords 
-- Lets you define wordlists where each word carries a value
+- Integrates with [passwdhk](https://sourceforge.net/projects/passwdhk/) to encourage stronger passwords. 
+- Lets you define wordlists where each word carries a value.
 - Exits with a status code indicating whether the password is strong enough.
 
-## Word list format
+## Word list
 
 The word list file should be a `.txt` or `.csv` file with each line containing a word and its associated value, separated by a comma. For example:
 ```csv
@@ -15,9 +15,14 @@ password,1
 qwerty,1
 ```
 
+I've also tested storing the wordlist on a UNC-path, which works fine. Which means you can store the wordlist in your NETLOGON share, and use it from there.
 
 ## Building
+**Prerequisites**:
+- CMake
+- A C++ compiler (e.g., GCC, Clang, MSVC)
 
+**Steps to build**:
 1. Clone the repository
 2. Run `cmake -B build` in the root directory
 3. Run `cmake --build build` to build the project
@@ -43,21 +48,35 @@ Example `config.ini`:
 
 ```ini
 [PasswordSettings]
-# The minimum score required for a password to be considered valid.
+# The minimum score a password must reach to be considered valid.
+# Increase this value to require stronger passwords.
+#
+# Default is 10.
 MinimumScore=10
 
-# Allow the use of the provided username in the password.
+# Whether the provided username is allowed to appear in the password.
+# Set to 'true' to permit the username as part of the password, or 'false' to forbid it.
+#
+# Default is false.
 AllowUsernameAsPassword=false
 
-# The maximum repeat count for any character in the password.
+# The maximum allowed repeat count for any single character in the password.
+# If a character repeats more than this number consecutively, only half of the extra characters will count toward the score.
+# For example, with MaxRepeatingCharacters=3, the run 'aaaaa' (5 a's) is scored as 2.
+#
+# Default is 3. Set to 0 to disable.
 MaxRepeatingCharacters=3
 
-# The maximum repeat count for numbers in the password.
-MaxRepeatingDigits=2
+# The maximum allowed repeat count for consecutive digits in the password.
+# If a digit sequence is longer than this value, only half of the extra digits will count toward the score (integer division).
+# Example: With MaxConsecutiveDigits=2, the run '12345' (5 digits) is scored as 2.
+#
+# Default is 2. Set to 0 to disable.
+MaxConsecutiveDigits=2
 
 ```
 
-The project will not run without a config file. 
+The project will run without a config file. 
 
 ## Contributing
 
