@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 3.31)
-project(passwdhook)
+project(PasswordRater)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(.)
 
-add_executable(passwdhook
-        src/PasswordHook.cpp
+add_executable(PasswordRater
+        src/PasswordRater.cpp
         src/config/Config.cpp
         src/config/Config.h
         src/wordlist/Wordlist.cpp
@@ -21,12 +21,12 @@ else()
     set(BINARY_DIR "${CMAKE_BINARY_DIR}")
 endif()
 
-add_custom_target(passwdhook-config
+add_custom_target(PasswordRater-config
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${CMAKE_SOURCE_DIR}/src/passwdhook.ini
-        ${BINARY_DIR}/passwdhook.ini
+        ${CMAKE_SOURCE_DIR}/src/passwordrater.ini
+        ${BINARY_DIR}/passwordrater.ini
 )
 
-add_dependencies(passwdhook passwdhook-config)
+add_dependencies(PasswordRater PasswordRater-config)
 
-target_include_directories(passwdhook PRIVATE ${CMAKE_SOURCE_DIR}/include)
+target_include_directories(PasswordRater PRIVATE ${CMAKE_SOURCE_DIR}/include)

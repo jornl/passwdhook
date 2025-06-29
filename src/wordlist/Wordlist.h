@@ -6,7 +6,7 @@
 #include "src/config/Config.h"
 
 
-namespace PasswordHook {
+namespace PasswordRater {
     class Wordlist {
     public:
         explicit Wordlist(const std::string &filename, const std::string &userName,

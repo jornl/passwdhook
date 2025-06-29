@@ -7,7 +7,7 @@
 #include <utility>
 
 #include "Wordlist.h"
-namespace PasswordHook {
+namespace PasswordRater {
     Wordlist::Wordlist(const std::string &filename, const std::string &userName, const Config &config) :
         m_config(config) {
         Load(filename, userName, m_config.Get<bool>("AllowUsernameAsPassword", false));

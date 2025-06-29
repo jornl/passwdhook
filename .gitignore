@@ -6,6 +6,7 @@
 *.obj
 *.pdb
 /build/
+/cmake-build-debug/
 
 # Logs
 *.log

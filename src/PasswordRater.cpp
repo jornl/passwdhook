@@ -10,16 +10,16 @@ int main(const int argc, char *argv[]) {
     int score{0};
 
     if (argc != 4) {
-        std::cout << "Usage: PasswordHook <wordlist.csv> <username> <password>\n";
+        std::cout << "Usage: PasswordRater <wordlist.csv> <username> <password>\n";
         return 1;
     }
 
-    const PasswordHook::Config cfg("./passwdhook.ini");
+    const PasswordRater::Config cfg("./passwordrater.ini");
 
     const std::string username = argv[2];
     const std::string password = argv[3];
 
-    PasswordHook::Wordlist wordlist(argv[1], username, cfg);
+    PasswordRater::Wordlist wordlist(argv[1], username, cfg);
 
     score = wordlist.GetScore(password);
 

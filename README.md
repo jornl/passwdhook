@@ -1,4 +1,4 @@
-# PasswordHook
+# PasswordRater
 
 Basic C++ project for enhanced password management with [passwdhk](https://sourceforge.net/projects/passwdhk/).
 
@@ -32,7 +32,7 @@ For Windows, you need to run `cmake --build build --config Release` to build the
 ## Usage
 
 ```sh
-PasswordHook.exe <path to wordList> <username> <password>
+PasswordRater.exe <path to wordList> <username> <password>
 ```
 
 Based on the documentation of [passwdhk](https://sourceforge.net/projects/passwdhk/), you specify the registry keys `preChangeProg` and `preChangeProgArgs`

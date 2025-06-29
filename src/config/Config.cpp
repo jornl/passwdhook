@@ -6,7 +6,7 @@
 #include "Config.h"
 
 
-namespace PasswordHook {
+namespace PasswordRater {
     Config::Config(const std::string &filename) {
         Load(filename);
     }

@@ -5,8 +5,7 @@
 #include <string>
 #include <ranges>
 
-namespace PasswordHook {
-
+namespace PasswordRater {
     template<typename Type>
     Type Config::Get(const std::string &key, Type defaultValue) const {
         if (!m_configMap.contains(key)) {

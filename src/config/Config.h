@@ -5,7 +5,7 @@
 #include <string>
 #include <unordered_map>
 
-namespace PasswordHook {
+namespace PasswordRater {
     class Config {
     public:
         explicit Config(const std::string &filename);
